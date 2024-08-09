@@ -1,0 +1,40 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <time.h>
+#include <unistd.h>
+#include <fcntl.h>
+
+/*save log*/
+#define YLOG_FILE 1
+/*consol ouput*/
+#define DEBUG 0
+
+extern int ylog_init();
+extern int ylog_deinit();
+extern char * ylog_get_time();
+extern int ylog_now_print();
+
+#define DEBUG 0
+#if DEBUG
+#define ylog(format, ...) \
+	{ylog_now_print(); printf(" [%s : %s : %d] ", \
+	__FILE__, __func__, __LINE__); \
+	printf(format, ##__VA_ARGS__);}
+#elif YLOG_FILE
+
+extern int g_fd;
+#define ylog(format, ...) \
+{ \
+	char tmp[512] = {0}; \
+	snprintf(tmp, 128, "%s [%s : %s : %d] ", ylog_get_time(),  __FILE__, __func__, __LINE__); \
+	write(g_fd, tmp, strlen(tmp));\
+	memset(tmp, 0, 512); \
+	snprintf(tmp, 128, format, ##__VA_ARGS__); \
+	write(g_fd, tmp, strlen(tmp)); }
+
+#else
+#define ylog(format, ...) 
+#endif
+
+
