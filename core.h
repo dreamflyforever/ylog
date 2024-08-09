@@ -30,7 +30,7 @@ extern int g_fd;
 	snprintf(tmp, 128, "%s [%s : %s : %d] ", ylog_get_time(),  __FILE__, __func__, __LINE__); \
 	write(g_fd, tmp, strlen(tmp));\
 	memset(tmp, 0, 512); \
-	snprintf(tmp, 128, format, ##__VA_ARGS__); \
+	snprintf(tmp, 512, format, ##__VA_ARGS__); \
 	write(g_fd, tmp, strlen(tmp)); }
 
 #else
