@@ -2,8 +2,10 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
-#include <unistd.h>
 #include <fcntl.h>
+#include <pthread.h>
+#include <unistd.h>
+#include <sys/statvfs.h>
 
 /*save log*/
 #define YLOG_FILE 1
@@ -37,4 +39,4 @@ extern int g_fd;
 #define ylog(format, ...) 
 #endif
 
-
+extern int space_check_pthread();
