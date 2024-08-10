@@ -31,7 +31,7 @@ int ylog_file_init()
 		perror("error open file\n");
 		return 1;
 	} else {
-		printf("open %s success\n", tmp_file);
+		printf("create %s log success\n", tmp_file);
 	}
 	space_check_pthread();
 	return 0;
@@ -60,6 +60,11 @@ int ylog_deinit()
 	return 0;
 }
 
+YLOG_CB ylog_cb;
+void register_cb(YLOG_CB user_cb)
+{
+	ylog_cb = user_cb;
+}
 void *monitorDiskSpace(void *arg)
 {
 	while (1) {
@@ -69,8 +74,9 @@ void *monitorDiskSpace(void *arg)
 			long long blockSize = fs_info.f_frsize;
 			long long availableSize = availableBlocks * blockSize;
 
-			if (availableSize < 50 * 1024 * 1024) {
-				ylog("warning: space < 50MB!\n");
+			if (availableSize < MAX_SPACE) {
+				ylog("warning: space < %d!\n", MAX_SPACE);
+				ylog_cb(NULL);
 			}
 		} else {
 			ylog("get space error\n");
@@ -84,11 +90,11 @@ int space_check_pthread()
 {
 	pthread_t thread_id;
 	if (pthread_create(&thread_id, NULL, monitorDiskSpace, NULL)!= 0) {
-		perror("创建线程失败");
+		ylog("create phtread error\n");
 		return 1;
 	}
 
-	//pthread_join(thread_id, NULL);  // 等待线程结束（这里实际上不会结束，因为线程是一个无限循环）
+	//pthread_join(thread_id, NULL);
 
 	return 0;
 }

@@ -12,6 +12,10 @@
 /*consol ouput*/
 #define DEBUG 0
 
+#define MAX_SPACE  50 * 1024 * 1024
+
+typedef void (*YLOG_CB) (void *p_arg);
+
 extern int ylog_init();
 extern int ylog_deinit();
 extern char * ylog_get_time();
@@ -40,3 +44,5 @@ extern int g_fd;
 #endif
 
 extern int space_check_pthread();
+
+void register_cb(YLOG_CB user_cb);
