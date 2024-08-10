@@ -11,6 +11,7 @@ int main(int argc, char *argv[])
 	register_cb(disk_full);
 	ylog("hello\n");
 	ylog("world\n");
+	ylog("%s\n", "nice");
 	ylog_deinit();
 	return 0;
 }
