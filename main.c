@@ -9,6 +9,7 @@ int main(int argc, char *argv[])
 {
 	ylog_init();
 	register_cb(disk_full);
+	ylog("compile time : %s\n", __TIME__);
 	ylog("hello\n");
 	ylog("world\n");
 	ylog("%s\n", "nice");
