@@ -76,7 +76,8 @@ void *monitorDiskSpace(void *arg)
 
 			if (availableSize < MAX_SPACE) {
 				ylog("warning: space < %d!\n", MAX_SPACE);
-				ylog_cb(NULL);
+				if (ylog_cb != NULL)
+					ylog_cb(NULL);
 			}
 		} else {
 			ylog("get space error\n");
