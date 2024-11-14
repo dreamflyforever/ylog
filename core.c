@@ -1,16 +1,17 @@
 #include "core.h"
 
-char time_str[80];
+static char time_str[80];
 char * ylog_get_time()
 {
-    time_t rawtime;
-    struct tm *timeinfo;
+	memset(time_str, 0 , 80);
+	time_t rawtime;
+	struct tm *timeinfo;
 
-    time(&rawtime);
-    timeinfo = localtime(&rawtime);
+	time(&rawtime);
+	timeinfo = localtime(&rawtime);
 
-    strftime(time_str, sizeof(time_str), "%Y-%m-%d %H:%M:%S", timeinfo);
-    return time_str;
+	strftime(time_str, sizeof(time_str), "%Y-%m-%d %H:%M:%S", timeinfo);
+	return time_str;
 }
 
 int ylog_now_print()
